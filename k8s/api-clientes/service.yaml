@@ -10,4 +10,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30082 # A porta que você usará no localhost (ex: localhost:30082)
+      nodePort: 30082
