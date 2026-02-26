@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    container_name: shared_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - shared_db_data:/var/lib/postgresql/data
+
+  api_produtos:
+    build: ./product-registration
+    container_name: api_produtos
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+  api_clientes:
+    build: ./cadastro-de-cliente
+    container_name: api_clientes
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "8082:8080"
+    depends_on:
+      - db
+
+volumes:
+  shared_db_data:
+    driver: local

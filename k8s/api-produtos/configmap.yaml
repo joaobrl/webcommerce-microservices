@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-produtos-config
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://db-produtos-svc:5432/produtos_db
+  SPRING_JPA_HIBERNATE_DDL_AUTO: update

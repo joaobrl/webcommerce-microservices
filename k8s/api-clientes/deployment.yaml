@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-clientes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-clientes
+  template:
+    metadata:
+      labels:
+        app: api-clientes
+    spec:
+      containers:
+        - name: api-clientes
+          image: api-clientes:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: api-clientes-config
+            - secretRef:
+                name: api-clientes-secret
+          ports:
+            - containerPort: 8080

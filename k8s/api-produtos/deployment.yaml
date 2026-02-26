@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-produtos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-produtos
+  template:
+    metadata:
+      labels:
+        app: api-produtos
+    spec:
+      containers:
+        - name: api-produtos
+          image: api-produtos:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: api-produtos-config
+            - secretRef:
+                name: api-produtos-secret
+          ports:
+            - containerPort: 8080
