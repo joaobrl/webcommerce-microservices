@@ -51,8 +51,8 @@ public class ProductController {
 
     @DeleteMapping("/delete/{id}")
     @Transactional
-    public ResponseEntity deleteProduct (@PathVariable Long Id) {
-        var product = productService.deleteProduct(Id);
+    public ResponseEntity deleteProduct (@PathVariable Long id) {
+        var product = productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 

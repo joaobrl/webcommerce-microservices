@@ -40,13 +40,16 @@ public class Product {
         this.name = productRequest.getName();
         this.description = productRequest.getDescription();
         this.price = productRequest.getPrice();
-        this.dimensions = new Dimensions(
-                productRequest.getDimensions().getWeight(),
-                productRequest.getDimensions().getHeight(),
-                productRequest.getDimensions().getWidth(),
-                productRequest.getDimensions().getLength()
-        );
+        this.stock = productRequest.getStock();
         this.enabled = true;
+        if (productRequest.getDimensions() != null) {
+            this.dimensions = new Dimensions();
+            var d = productRequest.getDimensions();
+            this.dimensions.setWeight(d.getWeight());
+            this.dimensions.setHeight(d.getHeight());
+            this.dimensions.setWidth(d.getWidth());
+            this.dimensions.setLength(d.getLength());
+        }
     }
 
     @PrePersist
@@ -57,32 +60,20 @@ public class Product {
     }
 
     public void Update(ProductRequestDto productRequest) {
-        if (productRequest.getName() != null) {
-            this.name = productRequest.getName();
-        }
-        if (productRequest.getDescription() != null) {
-            this.description = productRequest.getDescription();
-        }
-        if (productRequest.getPrice() != null) {
-            this.price = productRequest.getPrice();
-        }
-        if (productRequest.getStock() != null) {
-            this.stock = productRequest.getStock();
-        }
-        if (this.dimensions == null) {
-            this.dimensions = new Dimensions();
-        }
-        if (productRequest.getDimensions().getWeight() != null) {
-            this.dimensions.setWeight(productRequest.getDimensions().getWeight());
-        }
-        if (productRequest.getDimensions().getLength() != null) {
-            this.dimensions.setLength(productRequest.getDimensions().getLength());
-        }
-        if (productRequest.getDimensions().getHeight() != null) {
-            this.dimensions.setHeight(productRequest.getDimensions().getHeight());
-        }
-        if (productRequest.getDimensions().getWidth() != null) {
-            this.dimensions.setWidth(productRequest.getDimensions().getWidth());
+        if (productRequest.getName() != null) this.name = productRequest.getName();
+        if (productRequest.getDescription() != null) this.description = productRequest.getDescription();
+        if (productRequest.getPrice() != null) this.price = productRequest.getPrice();
+        if (productRequest.getStock() != null) this.stock = productRequest.getStock();
+
+        if (productRequest.getDimensions() != null) {
+            if (this.dimensions == null) {
+                this.dimensions = new Dimensions();
+            }
+            var d = productRequest.getDimensions();
+            if (d.getWeight() != null) this.dimensions.setWeight(d.getWeight());
+            if (d.getHeight() != null) this.dimensions.setHeight(d.getHeight());
+            if (d.getWidth() != null) this.dimensions.setWidth(d.getWidth());
+            if (d.getLength() != null) this.dimensions.setLength(d.getLength());
         }
     }
 
