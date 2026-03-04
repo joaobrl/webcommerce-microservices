@@ -3,7 +3,6 @@ package com.cadastro.cadastro.de.cliente.controller;
 import com.cadastro.cadastro.de.cliente.dto.ClientUpdateDto;
 import com.cadastro.cadastro.de.cliente.dto.ClienteRequestDto;
 import com.cadastro.cadastro.de.cliente.dto.ClienteResponseDto;
-import com.cadastro.cadastro.de.cliente.model.Client;
 import com.cadastro.cadastro.de.cliente.service.ClienteService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,7 +19,6 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
-
 
     @PostMapping
     @Transactional

@@ -3,6 +3,7 @@ package com.api.product.registration.controller;
 import com.api.product.registration.dto.ProductRequestDto;
 import com.api.product.registration.dto.ProductResponseDto;
 import com.api.product.registration.service.ProductService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity registerProduct(@Valid @RequestBody ProductRequestDto productRequest, UriComponentsBuilder uriBuilder) {
         var product = productService.registerProduct(productRequest);
         var uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
@@ -41,12 +43,14 @@ public class ProductController {
     }
 
     @PatchMapping("/update/{id}")
+    @Transactional
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequest) {
         var updatedProduct = productService.updateProduct(id, productRequest);
         return ResponseEntity.ok(new ProductResponseDto(updatedProduct));
     }
 
     @DeleteMapping("/delete/{id}")
+    @Transactional
     public ResponseEntity deleteProduct (@PathVariable Long Id) {
         var product = productService.deleteProduct(Id);
         return ResponseEntity.noContent().build();

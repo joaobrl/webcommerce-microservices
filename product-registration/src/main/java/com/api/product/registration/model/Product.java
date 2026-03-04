@@ -29,6 +29,8 @@ public class Product {
     private String description;
     private Double price;
     private Integer stock;
+    @Embedded
+    private Dimensions dimensions;
     private Boolean enabled;
 
     @Column(name = "tenant_id", nullable = false)
@@ -38,6 +40,12 @@ public class Product {
         this.name = productRequest.getName();
         this.description = productRequest.getDescription();
         this.price = productRequest.getPrice();
+        this.dimensions = new Dimensions(
+                productRequest.getDimensions().getWeight(),
+                productRequest.getDimensions().getHeight(),
+                productRequest.getDimensions().getWidth(),
+                productRequest.getDimensions().getLength()
+        );
         this.enabled = true;
     }
 
@@ -60,6 +68,21 @@ public class Product {
         }
         if (productRequest.getStock() != null) {
             this.stock = productRequest.getStock();
+        }
+        if (this.dimensions == null) {
+            this.dimensions = new Dimensions();
+        }
+        if (productRequest.getDimensions().getWeight() != null) {
+            this.dimensions.setWeight(productRequest.getDimensions().getWeight());
+        }
+        if (productRequest.getDimensions().getLength() != null) {
+            this.dimensions.setLength(productRequest.getDimensions().getLength());
+        }
+        if (productRequest.getDimensions().getHeight() != null) {
+            this.dimensions.setHeight(productRequest.getDimensions().getHeight());
+        }
+        if (productRequest.getDimensions().getWidth() != null) {
+            this.dimensions.setWidth(productRequest.getDimensions().getWidth());
         }
     }
 
