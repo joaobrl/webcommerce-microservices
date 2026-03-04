@@ -18,6 +18,12 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
 
     public Client cadastrarCliente(ClienteRequestDto clientRequest) {
+        var existingCustomer = clienteRepository.findByCpf(clientRequest.cpf());
+
+        if (existingCustomer.isPresent()) {
+            throw new IllegalArgumentException("Error: A customer with this CPF already exists.");
+        }
+
         var usuario = new Client(clientRequest);
         return clienteRepository.save(usuario);
     }
