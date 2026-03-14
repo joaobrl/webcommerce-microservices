@@ -24,7 +24,7 @@ public class BookingControllerImpl implements BookingController {
     @PostMapping("/create")
     public ResponseEntity createBooking(@Valid @RequestBody BookingRequestDto bookingRequest, UriComponentsBuilder uriBuilder) {
         var booking = bookingPortIn.createBooking(bookingRequest);
-        var uri = uriBuilder.path("/bookings/{id}").buildAndExpand(1L).toUri();
+        var uri = uriBuilder.path("/bookings/{id}").buildAndExpand(booking.getId()).toUri();
         return ResponseEntity.created(uri).body(new BookingResponseDto(booking));
     }
 
@@ -46,7 +46,7 @@ public class BookingControllerImpl implements BookingController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity updateBooking(@PathVariable UUID id, BookingUpdateDto bookingUpdate) {
+    public ResponseEntity updateBooking(@PathVariable UUID id, @RequestBody BookingUpdateDto bookingUpdate) {
         var booking = bookingPortIn.updateBooking(id, bookingUpdate);
         return ResponseEntity.ok(new BookingResponseDto(booking));
     }
