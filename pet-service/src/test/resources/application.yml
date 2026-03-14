@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -14,3 +16,10 @@ spring:
 
 server:
   port: 8080
+
+# Propriedades exclusivas para a execução dos testes
+external:
+  api:
+    customer-management:
+      url: localhost:8080 # Valor dummy apenas para o Feign compilar a URL sem dar erro
+
