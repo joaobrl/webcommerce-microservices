@@ -1,11 +1,8 @@
-package com.petshop.pet_service.infrastructure.messaging.dto;
+package com.petShop.NotificationService.core.port.in;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-
-public record BookingConfirmedEvent(
-        UUID bookingId,
+public record SendBookingConfirmationCommand(
         String ownerName,
         String ownerContact,
         String petName,

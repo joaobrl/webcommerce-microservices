@@ -77,7 +77,9 @@ public class BookingService implements BookingPortIn {
     public PetBooking finalizeBooking(UUID id, String employeName) {
         var booking = findBookingById(id);
         booking.completeBooking(employeName);
-        return bookingPortOut.save(booking);
+        var savedBooking = bookingPortOut.save(booking);
+        notificationPortOut.sendBookingConfirmation(savedBooking);
+        return savedBooking;
     }
 
 
