@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendamento Confirmado</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333;">
+<h1 style="color: #4CAF50;">Olá, <span th:text="${ownerName}">Nome do Dono</span>!</h1>
+<p>O agendamento para <b th:text="${petName}">Nome do Pet</b> foi confirmado com sucesso.</p>
+
+<div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 20px;">
+    <h3>Detalhes do Agendamento:</h3>
+    <ul>
+        <li><b>Serviço:</b> <span th:text="${serviceType}">Tipo</span></li>
+        <li><b>Data e Hora:</b> <span th:text="${bookingDate}">Data</span></li>
+        <li><b>Valor Estimado:</b> R$ <span th:text="${price}">0.00</span></li>
+    </ul>
+</div>
+
+<p style="margin-top: 30px;">Agradecemos a preferência e esperamos por si!</p>
+</body>
+</html>

@@ -36,11 +36,15 @@ public class BookingService implements BookingPortIn {
 
         validateBookingTime(bookingRequest.getBookingDateTime());
 
+        // Chamada feign para verificar disponibilidade de horário
         customerManagementPortOut.getAvailableSlots(bookingRequest.getBookingDateTime());
 
         var booking = new PetBooking(bookingRequest);
-        bookingPortOut.save(booking);
-        return booking;
+        var savedBooking = bookingPortOut.save(booking);
+
+        // Enviar notificação para o cliente (kakfa)
+        notificationPortOut.sendBookingScheduled(savedBooking);
+        return savedBooking;
     }
 
     //Listagem de agendamento
@@ -74,11 +78,11 @@ public class BookingService implements BookingPortIn {
 
     @Override
     @Transactional
-    public PetBooking finalizeBooking(UUID id, String employeName) {
+    public PetBooking finalizeBooking(UUID id, String employeName, String serviceDetails) {
         var booking = findBookingById(id);
-        booking.completeBooking(employeName);
+        booking.completeBooking(employeName, serviceDetails);
         var savedBooking = bookingPortOut.save(booking);
-        notificationPortOut.sendBookingConfirmation(savedBooking);
+        notificationPortOut.sendBookingCompleted(savedBooking);
         return savedBooking;
     }
 

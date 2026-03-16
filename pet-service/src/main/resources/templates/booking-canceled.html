@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendamento Cancelado</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+<h1 style="color: #FF5722;">Olá, <span th:text="${ownerName}">Nome do Dono</span>.</h1>
+
+<p>Informamos que o agendamento de <b th:text="${serviceType}">Tipo de Serviço</b> para o pet <b th:text="${petName}">Nome do Pet</b> foi <b>cancelado</b>.</p>
+
+<div style="background-color: #FBE9E7; padding: 15px; border-left: 4px solid #FF5722; border-radius: 4px; margin-top: 20px;">
+    <p style="margin: 0;">Se você não solicitou este cancelamento ou se precisar de ajuda para escolher um novo horário, nossa equipe está inteiramente à disposição.</p>
+</div>
+
+<p style="margin-top: 30px;">Esperamos ver você e seu pet em breve!</p>
+
+<p style="margin-top: 30px; color: #777; font-size: 12px;">Equipe PetShop</p>
+</body>
+</html>

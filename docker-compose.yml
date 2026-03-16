@@ -13,42 +13,6 @@ services:
       - shared_db_data:/var/lib/postgresql/data
       - ./postgres-init/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  api_produtos:
-    build: ./product-registration
-    container_name: api_products
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/produtos_db
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "8081:8080"
-    depends_on:
-      - db
-
-  api_clientes:
-    build: ./customer-management
-    container_name: api_customers
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/clientes_db
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "8082:8080"
-    depends_on:
-      - db
-
-  api_Booking:
-    build: ./pet-service
-    container_name: api_booking
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/booking_db
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "8083:8080"
-    depends_on:
-      - db
-
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: petshop_identity
@@ -65,20 +29,72 @@ services:
     depends_on:
       - db
 
+  api_products:
+    build: ./product-registration
+    container_name: api_products
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/product_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+
+  api_customers:
+    build: ./customer-management
+    container_name: api_customers
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - "8082:8080"
+    depends_on:
+      - db
+
+  api_Booking:
+    build: ./pet-service
+    container_name: api_booking
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/booking_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db
+
+  api_Notification:
+    build: ./NotificationService
+    container_name: api_notification
+    environment:
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - "8084:8084"
+    depends_on:
+      - kafka
+
   kafka:
     image: bitnami/kafka:latest
     container_name: petshop_kafka
     ports:
       - "9092:9092"
+      - "9093:9093"
+      - "9094:9094"
     environment:
       - KAFKA_CFG_NODE_ID=1
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://:9094,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
 
 volumes:
   shared_db_data:

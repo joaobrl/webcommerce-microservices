@@ -53,8 +53,8 @@ public class BookingControllerImpl implements BookingController {
 
     @Override
     @PutMapping("/{id}/finalize")
-    public ResponseEntity finalizeBooking(@PathVariable UUID id, @RequestParam (value = "EmployeName") String EmployeName) {
-        var booking = bookingPortIn.finalizeBooking(id, EmployeName);
+    public ResponseEntity finalizeBooking(@PathVariable UUID id, @RequestParam (value = "EmployeName") String EmployeName, @RequestBody String serviceDetails) {
+        var booking = bookingPortIn.finalizeBooking(id, EmployeName, serviceDetails);
         return ResponseEntity.ok(new BookingResponseDto(booking));
     }
 

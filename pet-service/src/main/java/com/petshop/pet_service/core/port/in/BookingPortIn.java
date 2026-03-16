@@ -17,5 +17,5 @@ public interface BookingPortIn {
 
     PetBooking updateBooking(UUID id, BookingUpdateDto bookingUpdate);
 
-    PetBooking finalizeBooking(UUID id, String employeName);
+    PetBooking finalizeBooking(UUID id, String employeName, String serviceDetails);
 }

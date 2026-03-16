@@ -97,11 +97,12 @@ public class PetBooking {
         }
     }
 
-    public void completeBooking(String employeeName) {
+    public void completeBooking(String employeeName, String serviceDetails) {
         if (this.status != StatusBooking.SCHEDULED) {
             throw new IllegalStateException("Only scheduled bookings can be finalized.");
         }
         this.employeeName = employeeName;
+        this.observations = serviceDetails;
         this.status = StatusBooking.COMPLETED;
     }
 }

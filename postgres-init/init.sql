@@ -1,3 +1,3 @@
-CREATE DATABASE clientes_db;
-CREATE DATABASE produtos_db;
+CREATE DATABASE customer_db;
+CREATE DATABASE product_db;
 CREATE DATABASE keycloak_db;

@@ -24,6 +24,6 @@ public interface BookingController {
 
     ResponseEntity updateBooking(@PathVariable UUID id, @Valid @RequestBody BookingUpdateDto bookingUpdate);
 
-    ResponseEntity finalizeBooking(@PathVariable UUID id, @RequestParam(value = "EmployeName") String EmployeName);
+    ResponseEntity finalizeBooking(@PathVariable UUID id, @RequestParam(value = "EmployeName") String EmployeName, @RequestBody String serviceDetails);
 
 }

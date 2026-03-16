@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Serviço Finalizado</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+<h1 style="color: #2196F3;">Olá, <span th:text="${ownerName}">Nome do Dono</span>!</h1>
+
+<p>Ótimas notícias! O serviço de <b th:text="${serviceType}">Tipo de Serviço</b> do seu pet <b th:text="${petName}">Nome do Pet</b> foi finalizado.</p>
+
+<div style="background-color: #E3F2FD; padding: 15px; border-left: 4px solid #2196F3; border-radius: 4px; margin-top: 20px;">
+    <p style="margin: 0;">O atendimento foi realizado com muito carinho pelo nosso profissional <b><span th:text="${employeeName}">Nome do Funcionário</span></b>.</p>
+</div>
+
+<p style="margin-top: 20px; font-size: 16px;">O seu pet já está cheiroso e pronto para ir para casa. Venha buscá-lo!</p>
+
+<p style="margin-top: 30px; color: #777; font-size: 12px;">Equipe PetShop</p>
+</body>
+</html>

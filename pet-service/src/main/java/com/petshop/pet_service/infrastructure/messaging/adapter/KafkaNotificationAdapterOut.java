@@ -2,7 +2,8 @@ package com.petshop.pet_service.infrastructure.messaging.adapter;
 
 import com.petshop.pet_service.core.domain.PetBooking;
 import com.petshop.pet_service.core.port.out.NotificationPortOut;
-import com.petshop.pet_service.infrastructure.messaging.dto.BookingConfirmedEvent;
+import com.petshop.pet_service.infrastructure.messaging.dto.SendEmailCommandDto;
+import com.petshop.pet_service.infrastructure.messaging.adapter.template.BookingEmailTemplateEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,33 +14,45 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaNotificationAdapterOut implements NotificationPortOut {
 
-    private static final String TOPIC_NAME = "booking.confirmed.topic";
+    private static final String TOPIC_COMMANDS = "notification.commands";
 
-    private final KafkaTemplate<String, BookingConfirmedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    private final BookingEmailTemplateEngine templateEngine;
 
     @Override
-    public void sendBookingConfirmation(PetBooking booking) {
+    public void sendBookingScheduled(PetBooking booking) {
+        String subject = "Agendamento Confirmado: " + booking.getPet().getPetName();
+        String htmlBody = templateEngine.buildScheduledEmail(booking);
 
-        var event = new BookingConfirmedEvent(
-                booking.getId(),
-                booking.getPet().getOwnerName(),
-                booking.getPet().getOwnerContact(),
-                booking.getPet().getPetName(),
-                booking.getServiceDetails().getServiceType().name(),
-                booking.getEmployeeName(),
-                booking.getBookingDateTime()
-        );
+        var command = new SendEmailCommandDto(booking.getPet().getOwnerContact(), subject, htmlBody);
+        publishCommand(booking.getId().toString(), command);
+    }
 
+    @Override
+    public void sendBookingCompleted(PetBooking booking) {
+        String subject = "Serviço Finalizado: Venha buscar o " + booking.getPet().getPetName();
+        String htmlBody = templateEngine.buildCompletedEmail(booking);
+
+        var command = new SendEmailCommandDto(booking.getPet().getOwnerContact(), subject, htmlBody);
+        publishCommand(booking.getId().toString(), command);
+    }
+
+    @Override
+    public void sendBookingCanceled(PetBooking booking) {
+        String subject = "Agendamento Cancelado: " + booking.getPet().getPetName();
+        String htmlBody = templateEngine.buildCanceledEmail(booking);
+
+        var command = new SendEmailCommandDto(booking.getPet().getOwnerContact(), subject, htmlBody);
+        publishCommand(booking.getId().toString(), command);
+    }
+
+    private void publishCommand(String partitionKey, SendEmailCommandDto command) {
         try {
-            String messageKey = booking.getId().toString();
-
-            kafkaTemplate.send(TOPIC_NAME, messageKey, event);
-
-            log.info("Successfully published BookingConfirmedEvent to Kafka Topic [{}] for Booking ID: {}",
-                    TOPIC_NAME, booking.getId());
-
+            kafkaTemplate.send(TOPIC_COMMANDS, partitionKey, command);
+            log.info("Successfully published email command to Topic [{}] for Booking ID: {}", TOPIC_COMMANDS, partitionKey);
         } catch (Exception e) {
-            log.error("Failed to publish BookingConfirmedEvent to Kafka", e);
+            log.error("Failed to publish email command to Topic [{}]", TOPIC_COMMANDS, e);
         }
     }
 }
