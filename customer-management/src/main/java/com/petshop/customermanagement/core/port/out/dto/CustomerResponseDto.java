@@ -1,6 +1,6 @@
-package com.petshop.customermanagement.dto;
+package com.petshop.customermanagement.core.port.out.dto;
 
-import com.petshop.customermanagement.model.Customer;
+import com.petshop.customermanagement.core.domain.Customer;
 
 public record CustomerResponseDto(
     Long id,

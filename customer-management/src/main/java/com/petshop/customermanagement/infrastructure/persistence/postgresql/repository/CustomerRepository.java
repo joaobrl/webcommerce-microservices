@@ -1,6 +1,6 @@
-package com.petshop.customermanagement.repository;
+package com.petshop.customermanagement.infrastructure.persistence.postgresql.repository;
 
-import com.petshop.customermanagement.model.Customer;
+import com.petshop.customermanagement.core.domain.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

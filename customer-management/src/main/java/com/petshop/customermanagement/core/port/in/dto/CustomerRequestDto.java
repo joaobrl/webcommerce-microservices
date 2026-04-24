@@ -1,4 +1,4 @@
-package com.petshop.customermanagement.dto;
+package com.petshop.customermanagement.core.port.in.dto;
 
 public record CustomerRequestDto(
     String name,

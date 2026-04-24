@@ -1,7 +1,7 @@
-package com.petshop.customermanagement.model;
+package com.petshop.customermanagement.core.domain;
 
 import com.petshop.customermanagement.config.tenant.TenantContext;
-import com.petshop.customermanagement.dto.CustomerRequestDto;
+import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Filter;

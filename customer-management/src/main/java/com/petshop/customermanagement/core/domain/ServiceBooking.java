@@ -1,4 +1,4 @@
-package com.petshop.customermanagement.model;
+package com.petshop.customermanagement.core.domain;
 
 public class ServiceBooking {
         private Long id;

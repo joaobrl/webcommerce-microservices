@@ -1,8 +1,10 @@
-package com.petshop.customermanagement.service;
+package com.petshop.customermanagement.core.application.service;
 
-import com.petshop.customermanagement.dto.CustomerRequestDto;
-import com.petshop.customermanagement.model.Customer;
-import com.petshop.customermanagement.repository.CustomerRepository;
+import com.petshop.customermanagement.core.port.in.CustomerPortIn;
+import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
+import com.petshop.customermanagement.core.domain.Customer;
+import com.petshop.customermanagement.core.port.out.CustomerPortOut;
+import com.petshop.customermanagement.infrastructure.persistence.postgresql.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,23 +14,23 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CustomerService {
+public class CustomerService implements CustomerPortIn {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerPortOut customerPortOut;
 
     public Customer registreCustomer(CustomerRequestDto clientRequest) {
-        var existingCustomer = customerRepository.findByCpf(clientRequest.cpf());
+        var existingCustomer = customerPortOut.findByCpf(clientRequest.cpf());
 
         if (existingCustomer.isPresent()) {
             throw new IllegalArgumentException("Error: A customer with this CPF already exists.");
         }
 
         var customer = new Customer(clientRequest);
-        return customerRepository.save(customer);
+        return customerPortOut.save(customer);
     }
 
     public List<Customer> customerList() {
-        return customerRepository.findAll();
+        return customerPortOut.findAll();
     }
 
     public Customer updateCustomer(Long id, CustomerRequestDto dto) {
@@ -48,18 +50,17 @@ public class CustomerService {
 
         customer.upadate(dtoUpdate);
         log.info("Customer with ID: {} updated.", id);
-        return customerRepository.save(customer);
+        return customerPortOut.save(customer);
     }
 
-    private Customer findCustomer(Long id) {
-        return customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + id));
+    public Customer findCustomer(Long id) {
+        return customerPortOut.findById(id);
     }
 
     public Customer deleteCustomer(Long id) {
         var customer = findCustomer(id);
         customer.setEnabled(false);
         log.info("Customer with ID {} deleted.", id);
-        return customerRepository.save(customer);
+        return customerPortOut.save(customer);
     }
 }
