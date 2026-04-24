@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.petShop</groupId>
-	<artifactId>NotificationService</artifactId>
+	<artifactId>notification-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>NotificationService</name>
+	<name>notification-service</name>
 	<description>Notification Service</description>
 	<url/>
 	<licenses>

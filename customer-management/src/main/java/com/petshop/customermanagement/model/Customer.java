@@ -32,7 +32,6 @@ public class Customer {
     private String phone;
     private List<ServiceBooking> serviceBookings;
     private Boolean Enabled;
-
     @Column(name = "tenant_id", nullable = false)
     private String tenantId;
 
