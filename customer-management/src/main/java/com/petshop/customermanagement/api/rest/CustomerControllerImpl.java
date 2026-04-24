@@ -2,7 +2,7 @@ package com.petshop.customermanagement.api.rest;
 
 import com.petshop.customermanagement.core.port.in.CustomerPortIn;
 import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
-import com.petshop.customermanagement.core.port.out.dto.CustomerResponseDto;
+import com.petshop.customermanagement.api.rest.dto.CustomerResponseDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -2,6 +2,8 @@ package com.petshop.customermanagement.infrastructure.persistence.postgresql.ada
 
 import com.petshop.customermanagement.core.domain.Customer;
 import com.petshop.customermanagement.core.port.out.CustomerPortOut;
+import com.petshop.customermanagement.infrastructure.persistence.postgresql.entity.CustomerEntity;
+import com.petshop.customermanagement.infrastructure.persistence.postgresql.mapper.CustomerMapper;
 import com.petshop.customermanagement.infrastructure.persistence.postgresql.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,25 +16,29 @@ import java.util.Optional;
 public class CustomerPersistenceAdapterOut implements CustomerPortOut {
 
     private final CustomerRepository customerRepository;
+    private final CustomerMapper mapper;
 
     @Override
     public Optional<Customer> findByCpf(String cpf) {
-        return customerRepository.findByCpf(cpf);
+        return customerRepository.findByCpf(cpf)
+                .map(mapper::toDomain);
     }
 
     @Override
     public Customer save(Customer customer) {
-        return customerRepository.save(customer);
+        CustomerEntity entity = mapper.toEntity(customer);
+        return mapper.toDomain(customerRepository.save(entity));
     }
 
     @Override
     public List<Customer> findAll() {
-        return customerRepository.findAll();
+        return mapper.toDomainList(customerRepository.findAll());
     }
 
     @Override
     public Customer findById(Long id) {
         return customerRepository.findById(id)
+                .map(mapper::toDomain)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + id));
     }
 }

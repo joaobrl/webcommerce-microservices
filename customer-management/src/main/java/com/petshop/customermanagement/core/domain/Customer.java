@@ -1,38 +1,21 @@
 package com.petshop.customermanagement.core.domain;
 
-import com.petshop.customermanagement.config.tenant.TenantContext;
 import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 
-import java.util.List;
-
-@Entity
-@Table(name = "clientes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@FilterDef(name = "tenantFilter", parameters = {@ParamDef(name = "tenantId", type = String.class)})
-@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 public class Customer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(unique = true)
     private String cpf;
-    @Column(unique = true)
     private String email;
     private String phone;
-    private List<ServiceBooking> serviceBookings;
-    private Boolean Enabled;
-    @Column(name = "tenant_id", nullable = false)
+    private Boolean enabled;
     private String tenantId;
 
     public Customer(CustomerRequestDto clientRequest) {
@@ -40,11 +23,7 @@ public class Customer {
         this.cpf = clientRequest.cpf();
         this.email = clientRequest.email();
         this.phone = clientRequest.phone();
-        this.Enabled = true;
-    }
-    @PrePersist
-    public void prePersist() {
-        if (this.tenantId == null) this.tenantId = TenantContext.getCurrentTenant();
+        this.enabled = true;
     }
 
     public void upadate(CustomerRequestDto dto) {

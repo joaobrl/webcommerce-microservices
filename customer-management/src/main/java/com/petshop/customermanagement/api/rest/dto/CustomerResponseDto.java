@@ -1,4 +1,4 @@
-package com.petshop.customermanagement.core.port.out.dto;
+package com.petshop.customermanagement.api.rest.dto;
 
 import com.petshop.customermanagement.core.domain.Customer;
 
