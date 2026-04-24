@@ -3,6 +3,7 @@ package com.petshop.customermanagement.api.rest;
 import com.petshop.customermanagement.core.port.in.CustomerPortIn;
 import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
 import com.petshop.customermanagement.api.rest.dto.CustomerResponseDto;
+import com.petshop.customermanagement.core.port.in.dto.CustomerUpdateDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +13,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
-@RequestMapping("/customers")
+@RequestMapping("/api/v1/customers")
 @RestController
 @RequiredArgsConstructor
 public class CustomerControllerImpl implements CustomerController{
 
     private final CustomerPortIn portIn;
 
-    @PostMapping("/api/v1/register")
+    @PostMapping("/register")
     @Transactional
     public ResponseEntity registerCustomer(@Valid @RequestBody CustomerRequestDto clientRequest, UriComponentsBuilder uriBuilder) {
-        var customer = portIn.registreCustomer(clientRequest);
+        var customer = portIn.registerCustomer(clientRequest);
         var uri = uriBuilder.path("/customer/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).body(new CustomerResponseDto(customer));
     }
@@ -37,7 +38,7 @@ public class CustomerControllerImpl implements CustomerController{
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerRequestDto dto) {
+    public ResponseEntity updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerUpdateDto dto) {
         var customer = portIn.updateCustomer(id, dto);
         return ResponseEntity.ok(new CustomerResponseDto(customer));
     }

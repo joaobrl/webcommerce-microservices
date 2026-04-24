@@ -1,6 +1,5 @@
 package com.petshop.customermanagement.core.domain;
 
-import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
 import lombok.*;
 
 @AllArgsConstructor
@@ -18,18 +17,18 @@ public class Customer {
     private Boolean enabled;
     private String tenantId;
 
-    public Customer(CustomerRequestDto clientRequest) {
-        this.name = clientRequest.name();
-        this.cpf = clientRequest.cpf();
-        this.email = clientRequest.email();
-        this.phone = clientRequest.phone();
+    public Customer(String name, String cpf, String email, String phone) {
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.phone = phone;
         this.enabled = true;
     }
 
-    public void upadate(CustomerRequestDto dto) {
-        if (dto.name() != null) this.name = dto.name();
-        if (dto.email() != null) this.email = dto.email();
-        if (dto.phone() != null) this.phone = dto.phone();
+    public void update(String name, String email, String phone) {
+        if (name != null) this.name = name;
+        if (email != null) this.email = email;
+        if (phone != null) this.phone = phone;
     }
 
 }

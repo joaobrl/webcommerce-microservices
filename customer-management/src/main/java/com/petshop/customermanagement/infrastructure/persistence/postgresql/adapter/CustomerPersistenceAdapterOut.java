@@ -36,9 +36,8 @@ public class CustomerPersistenceAdapterOut implements CustomerPortOut {
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id)
-                .map(mapper::toDomain)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + id));
+                .map(mapper::toDomain);
     }
 }

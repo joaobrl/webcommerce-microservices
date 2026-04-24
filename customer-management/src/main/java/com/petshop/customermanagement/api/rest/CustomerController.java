@@ -2,6 +2,7 @@ package com.petshop.customermanagement.api.rest;
 
 import com.petshop.customermanagement.core.port.in.dto.CustomerRequestDto;
 import com.petshop.customermanagement.api.rest.dto.CustomerResponseDto;
+import com.petshop.customermanagement.core.port.in.dto.CustomerUpdateDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ public interface CustomerController {
 
     ResponseEntity<List<CustomerResponseDto>> listCustomers();
 
-    ResponseEntity updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerRequestDto dto);
+    ResponseEntity updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerUpdateDto dto);
 
     ResponseEntity deleteCustomer(@PathVariable Long id);
 }

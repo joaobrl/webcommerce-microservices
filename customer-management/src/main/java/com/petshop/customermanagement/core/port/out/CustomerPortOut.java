@@ -13,5 +13,5 @@ public interface CustomerPortOut {
 
     List<Customer> findAll();
 
-    Customer findById(Long id);
+    Optional<Customer> findById(Long id);
 }
